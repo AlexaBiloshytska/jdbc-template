@@ -17,18 +17,17 @@ public class NamedParameterJDBCTemplate implements JdbcTemplate {
 
     @Override
     public <T> List<T> query(String query, RowMapper<T> rowMapper, Object... args) {
-        return queryExecutor.executeQuery(query, args, rowMapper);
+        return queryExecutor.executeQuery(query, rowMapper, args);
     }
 
     @Override
     public <T> T queryForObject(String query, RowMapper<T> rowMapper, Object... args) {
-        return queryExecutor.executeQueryForObject(query, rowMapper,args);
+        return queryExecutor.executeQueryForObject(query, rowMapper, args);
     }
 
     @Override
     public int update(String query, Object... args) {
-        List<?> paramsList = new ArrayList<>(Arrays.asList(args));
-        return queryExecutor.executeUpdate(query, paramsList);
+        return queryExecutor.executeUpdate(query, args);
     }
 
     @Override

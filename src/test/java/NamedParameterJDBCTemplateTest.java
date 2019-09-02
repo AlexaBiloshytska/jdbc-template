@@ -33,24 +33,29 @@ public class NamedParameterJDBCTemplateTest {
     @Test
     public void queryWithVarargsTest() {
         String query = "select * from products where name = ? and category = ?";
-        List<Product> queryList = namedParameterJDBCTemplate.query(query, mapper, "Huawei P20 Lite","Mobile");
+        List<Product> queryList = namedParameterJDBCTemplate.query(query, mapper, "Huawei P20 Lite", "Mobile");
 
-        Assert.assertEquals( "Huawei P20 Lite", queryList.get(0).getName());
+        Assert.assertEquals("Huawei P20 Lite", queryList.get(0).getName());
     }
 
     @Test
-    public void updateWithVarargsTest(){
-        String updateQuery = "update products set name =? , category =? where category=?";
-        int update = namedParameterJDBCTemplate.update(updateQuery, "samsung","Flagman","Mobile");
-        String updatedQuery ="select *from products where category =?";
+    public void updateWithVarargsTest() {
+        String updateQuery = "update products set name=?, category=? where category=?";
+        int update = namedParameterJDBCTemplate.update(updateQuery, "samsung", "Flagman", "Mobile");
         Assert.assertEquals(2, update);
 
+        String selectQuery = "select * from products where category =?";
+        List<Product> products = namedParameterJDBCTemplate.query(selectQuery, mapper, "Flagman");
+        Assert.assertEquals("samsung",products.get(0).getName());
+        Assert.assertEquals("samsung",products.get(1).getName());
+        Assert.assertEquals("Flagman", products.get(0).getCategory());
+        Assert.assertEquals("Flagman", products.get(1).getCategory());
     }
 
     @Test
-    public void queryForObjectVarargs(){
+    public void queryForObjectVarargs() {
         String query = "select * from products where category =?";
         Product product = namedParameterJDBCTemplate.queryForObject(query, mapper, "Computers");
-        Assert.assertEquals("Computers",product.getCategory());
+        Assert.assertEquals("Computers", product.getCategory());
     }
 }

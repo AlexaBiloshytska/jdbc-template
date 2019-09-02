@@ -20,7 +20,7 @@ public class QueryExecutor {
         this.dataSource = dataSource;
     }
 
-    public <T> List<T> executeQuery(String query,Object args, RowMapper<T> rowMapper) {
+    public <T> List<T> executeQuery(String query, RowMapper<T> rowMapper, Object[] args) {
         long startExecution = System.currentTimeMillis();
 
         try (Connection connection = dataSource.getConnection();
@@ -41,7 +41,7 @@ public class QueryExecutor {
         }
     }
 
-    public <T> T executeQueryForObject(String query, RowMapper<T> rowMapper,Object... args) {
+    public <T> T executeQueryForObject(String query, RowMapper<T> rowMapper, Object[] args) { //[]
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             setStatementVariables(statement, args);
@@ -57,7 +57,7 @@ public class QueryExecutor {
 
 
 
-    public int executeUpdate(String query, List<?> params) {
+    public int executeUpdate(String query, Object[] params) {
         long startExecution = System.currentTimeMillis();
 
         try (Connection connection = dataSource.getConnection();
@@ -78,7 +78,7 @@ public class QueryExecutor {
     }
 
 
-    private void setStatementVariables(PreparedStatement statement, Object... args) {
+    private void setStatementVariables(PreparedStatement statement, Object[] args) {
         try {
             int index = 1;
             // for (int i = 0; i< param.size; i++) { param.get(i)}
