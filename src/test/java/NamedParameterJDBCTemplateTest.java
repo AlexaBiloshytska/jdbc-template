@@ -1,6 +1,6 @@
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import entity.Products;
+import entity.Product;
 import mapper.ProductMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -33,7 +33,7 @@ public class NamedParameterJDBCTemplateTest {
     @Test
     public void queryWithVarargsTest() {
         String query = "select * from products where name = ? and category = ?";
-        List<Products> queryList = namedParameterJDBCTemplate.query(query, mapper, "Huawei P20 Lite","Mobile");
+        List<Product> queryList = namedParameterJDBCTemplate.query(query, mapper, "Huawei P20 Lite","Mobile");
 
         Assert.assertEquals( "Huawei P20 Lite", queryList.get(0).getName());
     }
@@ -45,5 +45,12 @@ public class NamedParameterJDBCTemplateTest {
         String updatedQuery ="select *from products where category =?";
         Assert.assertEquals(2, update);
 
+    }
+
+    @Test
+    public void queryForObjectVarargs(){
+        String query = "select * from products where category =?";
+        Product product = namedParameterJDBCTemplate.queryForObject(query, mapper, "Computers");
+        Assert.assertEquals("Computers",product.getCategory());
     }
 }

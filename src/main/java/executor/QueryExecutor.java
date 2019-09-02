@@ -20,12 +20,12 @@ public class QueryExecutor {
         this.dataSource = dataSource;
     }
 
-    public <T> List<T> executeQuery(String query, List<?> param, RowMapper<T> rowMapper) {
+    public <T> List<T> executeQuery(String query,Object args, RowMapper<T> rowMapper) {
         long startExecution = System.currentTimeMillis();
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-            setStatementVariables(statement, param);
+             setStatementVariables(statement, args);
 
             logger.info("SQL: {}", statement);
             ResultSet resultSet = statement.executeQuery();
@@ -40,6 +40,22 @@ public class QueryExecutor {
             throw new RuntimeException(e);
         }
     }
+
+    public <T> T executeQueryForObject(String query, RowMapper<T> rowMapper,Object... args) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            setStatementVariables(statement, args);
+
+            logger.info("SQL: {}", statement);
+            ResultSet resultSet = statement.executeQuery();
+            return entityBuilder.mapEntity(resultSet, rowMapper);
+        } catch (SQLException e) {
+            throw new RuntimeException("");
+        }
+
+    }
+
+
 
     public int executeUpdate(String query, List<?> params) {
         long startExecution = System.currentTimeMillis();
@@ -61,12 +77,13 @@ public class QueryExecutor {
         }
     }
 
-    private void setStatementVariables(PreparedStatement statement, List<?> params) {
+
+    private void setStatementVariables(PreparedStatement statement, Object... args) {
         try {
             int index = 1;
             // for (int i = 0; i< param.size; i++) { param.get(i)}
 
-            for (Object param : params) {
+            for (Object param : args) {
                 Class paramClass = param.getClass();
 
                 if (Boolean.class.equals(paramClass)) {
