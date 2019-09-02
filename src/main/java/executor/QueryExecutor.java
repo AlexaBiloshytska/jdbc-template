@@ -3,16 +3,16 @@ package executor;
 import mapper.RowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import parser.Parser;
 import template.EntityBuilder;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QueryExecutor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private Parser parser = new Parser();
     private DataSource dataSource;
     private EntityBuilder entityBuilder = new EntityBuilder();
 
@@ -41,13 +41,27 @@ public class QueryExecutor {
         }
     }
 
-    public int executeUpdate(String query, Object... args) {
-        List<?> paramsList = parser.getOrderParamList(args);
-        return executeUpdate(query, args);
+    public int executeUpdate(String query, List<?> params) {
+        long startExecution = System.currentTimeMillis();
 
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            setStatementVariables(statement, params);
+
+            logger.info("SQL: {}", statement);
+            int affectedRows = statement.executeUpdate();
+            logger.debug("Statement executed in {} milliseconds", System.currentTimeMillis() - startExecution);
+
+            return affectedRows;
+
+        } catch (SQLException e) {
+            logger.debug("Statement executed in {} milliseconds", System.currentTimeMillis() - startExecution);
+            throw new RuntimeException(e);
+        }
     }
 
-    protected void setStatementVariables(PreparedStatement statement, List<?> params) {
+    private void setStatementVariables(PreparedStatement statement, List<?> params) {
         try {
             int index = 1;
             // for (int i = 0; i< param.size; i++) { param.get(i)}
@@ -80,26 +94,6 @@ public class QueryExecutor {
             }
         } catch (SQLException e) {
             logger.error("Failed to set statement parameters: {}", statement);
-            throw new RuntimeException(e);
-        }
-    }
-
-    private int executeUpdate(String query, List<?> params) {
-        long startExecution = System.currentTimeMillis();
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            setStatementVariables(statement, params);
-
-            logger.info("SQL: {}", statement);
-            int affectedRows = statement.executeUpdate();
-            logger.debug("Statement executed in {} milliseconds", System.currentTimeMillis() - startExecution);
-
-            return affectedRows;
-
-        } catch (SQLException e) {
-            logger.debug("Statement executed in {} milliseconds", System.currentTimeMillis() - startExecution);
             throw new RuntimeException(e);
         }
     }

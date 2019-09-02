@@ -40,7 +40,10 @@ public class NamedParameterJDBCTemplateTest {
 
     @Test
     public void updateWithVarargsTest(){
-        String updateQuery = "update products where name =? and category =?";
-        int update = namedParameterJDBCTemplate.update(updateQuery, mapper);
+        String updateQuery = "update products set name =? , category =? where category=?";
+        int update = namedParameterJDBCTemplate.update(updateQuery, "samsung","Flagman","Mobile");
+        String updatedQuery ="select *from products where category =?";
+        Assert.assertEquals(2, update);
+
     }
 }
