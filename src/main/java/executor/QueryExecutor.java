@@ -50,7 +50,7 @@ public class QueryExecutor {
             ResultSet resultSet = statement.executeQuery();
             return entityBuilder.mapEntity(resultSet, rowMapper);
         } catch (SQLException e) {
-            throw new RuntimeException("");
+            throw new RuntimeException("More than one object is found");
         }
 
     }

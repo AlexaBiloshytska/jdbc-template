@@ -57,5 +57,8 @@ public class NamedParameterJDBCTemplateTest {
         String query = "select * from products where category =?";
         Product product = namedParameterJDBCTemplate.queryForObject(query, mapper, "Computers");
         Assert.assertEquals("Computers", product.getCategory());
+
+        Product products = namedParameterJDBCTemplate.queryForObject(query, mapper, "Mobile");
+        Assert.assertEquals("Mobile", products.getCategory());
     }
 }
