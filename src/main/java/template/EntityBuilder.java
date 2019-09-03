@@ -32,13 +32,18 @@ public class EntityBuilder {
 
     public <T> T mapEntity(ResultSet resultSet, RowMapper<T> rowMapper) {
         try {
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 T result = rowMapper.mapRow(resultSet);
+                if (resultSet.next()) {
+                    throw new RuntimeException("There is more than one row in resultSet");
+                }
                 return result;
+            } else {
+                throw new RuntimeException("ResultSet is empty");
             }
-            throw new RuntimeException("Unable to process resultSet");
         } catch (SQLException e) {
-            throw new EntityBuilderException("Failed to process resultSet");
+            throw new RuntimeException("Unable to process resultSet");
         }
     }
+
 }
