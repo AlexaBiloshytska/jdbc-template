@@ -76,4 +76,15 @@ public class NamedParameterJDBCTemplateTest {
         List<Product> products = namedParameterJDBCTemplate.query(query, mapper, map);
         Assert.assertEquals(1, products.size());
     }
+
+    @Test
+    public void queryForObject(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("category","Computers");
+
+        String query = "select * from products where category =:category";
+
+        Product product = namedParameterJDBCTemplate.queryForObject(query, mapper, map);
+        Assert.assertEquals("Computers",product.getCategory());
+    }
 }
