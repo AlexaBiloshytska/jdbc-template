@@ -45,7 +45,7 @@ public class QueryExecutor {
     }
 
     public <T> T executeQueryForObject(String query, RowMapper<T> rowMapper,List<?> args) {
-      
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             setStatementVariables(statement, args);

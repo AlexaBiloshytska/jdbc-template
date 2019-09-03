@@ -1,11 +1,9 @@
-import com.zaxxer.hikari.HikariDataSource;
 import executor.QueryExecutor;
 import mapper.RowMapper;
 import parser.Parser;
 import template.EntityBuilder;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +52,8 @@ public class NamedParameterJDBCTemplate implements JdbcTemplate {
 
     @Override
     public <T> T queryForObject(String query, RowMapper<T> rowMapper, Map<String, ?> params) {
-        return null;
+        String placeHolderQuery = parser.getPlaceHolderQuery(query, params);
+        List<?> orderParamList = parser.getOrderParamList(query, params);
+        return queryExecutor.executeQueryForObject(placeHolderQuery, rowMapper, orderParamList);
     }
 }
