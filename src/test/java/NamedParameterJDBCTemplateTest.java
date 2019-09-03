@@ -75,5 +75,6 @@ public class NamedParameterJDBCTemplateTest {
 
         List<Product> products = namedParameterJDBCTemplate.query(query, mapper, map);
         Assert.assertEquals(1, products.size());
+
     }
 }

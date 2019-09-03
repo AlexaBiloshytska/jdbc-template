@@ -45,6 +45,7 @@ public class QueryExecutor {
     }
 
     public <T> T executeQueryForObject(String query, RowMapper<T> rowMapper,List<?> args) {
+      
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             setStatementVariables(statement, args);
@@ -59,6 +60,7 @@ public class QueryExecutor {
     }
 
     public int executeUpdate(String query, List<?> params) {
+  
         long startExecution = System.currentTimeMillis();
 
         try (Connection connection = dataSource.getConnection();
@@ -77,7 +79,6 @@ public class QueryExecutor {
             throw new RuntimeException(e);
         }
     }
-
 
     private void setStatementVariables(PreparedStatement statement, List<?> args) {
         try {

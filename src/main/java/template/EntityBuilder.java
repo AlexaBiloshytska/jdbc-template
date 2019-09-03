@@ -27,10 +27,9 @@ public class EntityBuilder {
             throw new EntityBuilderException("Unable to process resultSet");
         } else {
             throw new RuntimeException("ResultSet is empty");//Fix snd refactor
-        }
-    }
-
-    public <T> T mapEntity(ResultSet resultSet, RowMapper<T> rowMapper) {
+          
+          
+public <T> T mapEntity(ResultSet resultSet, RowMapper<T> rowMapper) {
         try {
             if (resultSet.next()) {
                 T result = rowMapper.mapRow(resultSet);
@@ -46,3 +45,4 @@ public class EntityBuilder {
         }
     }
 }
+
