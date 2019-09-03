@@ -6,7 +6,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NamedParameterJDBCTemplateTest {
 
@@ -60,5 +63,17 @@ public class NamedParameterJDBCTemplateTest {
 
         Product products = namedParameterJDBCTemplate.queryForObject(query, mapper, "Mobile");
         Assert.assertEquals("Mobile", products.getCategory());
+    }
+
+    @Test
+    public void query(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("category","Mobile");
+        map.put("name123dfgdfgdf","Samsung S 10");//note this will go first due to the key hashcode
+
+        String query = "select * from products where name=:name123dfgdfgdf and category=:category";
+
+        List<Product> products = namedParameterJDBCTemplate.query(query, mapper, map);
+        Assert.assertEquals(1, products.size());
     }
 }
