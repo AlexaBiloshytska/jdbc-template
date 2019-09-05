@@ -47,7 +47,9 @@ public class NamedParameterJDBCTemplate implements JdbcTemplate {
 
     @Override
     public int update(String query, Map<String, ?> params) {
-        return 0;
+        String placeHolderQuery = parser.getPlaceHolderQuery(query, params);
+        List<?> orderParamList = parser.getOrderParamList(query, params);
+        return queryExecutor.executeUpdate(placeHolderQuery,orderParamList);
     }
 
     @Override
