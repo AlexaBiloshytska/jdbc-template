@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +48,8 @@ public class NamedParameterJDBCTemplateTest {
 
         String selectQuery = "select * from products where category =?";
         List<Product> products = namedParameterJDBCTemplate.query(selectQuery, mapper, "Flagman");
-        Assert.assertEquals("samsung",products.get(0).getName());
-        Assert.assertEquals("samsung",products.get(1).getName());
+        Assert.assertEquals("samsung", products.get(0).getName());
+        Assert.assertEquals("samsung", products.get(1).getName());
         Assert.assertEquals("Flagman", products.get(0).getCategory());
         Assert.assertEquals("Flagman", products.get(1).getCategory());
     }
@@ -60,16 +59,25 @@ public class NamedParameterJDBCTemplateTest {
         String query = "select * from products where category =?";
         Product product = namedParameterJDBCTemplate.queryForObject(query, mapper, "Computers");
         Assert.assertEquals("Computers", product.getCategory());
+    }
 
-        Product products = namedParameterJDBCTemplate.queryForObject(query, mapper, "Mobile");
-        Assert.assertEquals("Mobile", products.getCategory());
+    @Test(expected = RuntimeException.class)
+    public void queryingMultipleRowsTest() {
+        String query = "select * from products where category =?";
+        namedParameterJDBCTemplate.queryForObject(query, mapper, "Mobile");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void queryWithCategory() {
+        String query = "select * from products where category =?";
+        namedParameterJDBCTemplate.queryForObject(query, mapper, "Gadjets");
     }
 
     @Test
-    public void query(){
+    public void query() {
         Map<String, Object> map = new HashMap<>();
-        map.put("category","Mobile");
-        map.put("name123dfgdfgdf","Samsung S 10");//note this will go first due to the key hashcode
+        map.put("category", "Mobile");
+        map.put("name123dfgdfgdf", "Samsung S 10");//note this will go first due to the key hashcode
 
         String query = "select * from products where name=:name123dfgdfgdf and category=:category";
 
@@ -78,13 +86,29 @@ public class NamedParameterJDBCTemplateTest {
     }
 
     @Test
-    public void queryForObject(){
+    public void queryForObject() {
         Map<String, Object> map = new HashMap<>();
-        map.put("category","Computers");
+        map.put("category", "Computers");
 
         String query = "select * from products where category =:category";
 
         Product product = namedParameterJDBCTemplate.queryForObject(query, mapper, map);
-        Assert.assertEquals("Computers",product.getCategory());
+        Assert.assertEquals("Asus UX430", product.getName());
+    }
+
+    @Test
+    public void update() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "Asus UX432");
+        map.put("category", "Computers");
+
+        String update = "update products set name=:name where category=:category";
+        int updating = namedParameterJDBCTemplate.update(update, map);
+        Assert.assertEquals(1, updating);
+
+        String afterUpdate = "select * from products where category=:category";
+        Product product = namedParameterJDBCTemplate.queryForObject(afterUpdate, mapper, map);
+        Assert.assertEquals("Asus UX432",product.getName());
+
     }
 }
