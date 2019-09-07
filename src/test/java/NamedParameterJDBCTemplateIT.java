@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NamedParameterJDBCTemplateTest {
+public class NamedParameterJDBCTemplateIT {
 
     private ProductMapper mapper = new ProductMapper();
     private static NamedParameterJDBCTemplate namedParameterJDBCTemplate;
@@ -93,13 +93,13 @@ public class NamedParameterJDBCTemplateTest {
         String query = "select * from products where category =:category";
 
         Product product = namedParameterJDBCTemplate.queryForObject(query, mapper, map);
-        Assert.assertEquals("Asus UX430", product.getName());
+        Assert.assertEquals("Asus UX4322", product.getName());
     }
 
     @Test
     public void update() {
         Map<String, Object> map = new HashMap<>();
-        map.put("name", "Asus UX432");
+        map.put("name", "Asus UX4322");
         map.put("category", "Computers");
 
         String update = "update products set name=:name where category=:category";
@@ -108,7 +108,7 @@ public class NamedParameterJDBCTemplateTest {
 
         String afterUpdate = "select * from products where category=:category";
         Product product = namedParameterJDBCTemplate.queryForObject(afterUpdate, mapper, map);
-        Assert.assertEquals("Asus UX432",product.getName());
+        Assert.assertEquals("Asus UX4322",product.getName());
 
     }
 }
