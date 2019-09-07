@@ -1,4 +1,6 @@
-import mapper.RowMapper;
+package com.alexa.jdbc;
+
+import com.alexa.jdbc.mapper.RowMapper;
 
 import java.sql.SQLException;
 import java.util.List;

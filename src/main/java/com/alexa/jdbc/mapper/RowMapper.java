@@ -1,4 +1,4 @@
-package mapper;
+package com.alexa.jdbc.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,7 +1,8 @@
-package parser;
+package com.alexa.jdbc.parser;
 
 import org.junit.Assert;
 import org.junit.Test;
+import com.alexa.jdbc.template.Parser;
 
 import java.util.*;
 

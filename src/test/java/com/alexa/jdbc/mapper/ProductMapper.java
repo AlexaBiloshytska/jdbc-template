@@ -1,6 +1,6 @@
-package mapper;
+package com.alexa.jdbc.mapper;
 
-import entity.Product;
+import com.alexa.jdbc.entity.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,17 +1,12 @@
-package executor;
+package com.alexa.jdbc.template;
 
-import mapper.RowMapper;
+import com.alexa.jdbc.mapper.RowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import parser.Parser;
-import template.EntityBuilder;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class QueryExecutor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

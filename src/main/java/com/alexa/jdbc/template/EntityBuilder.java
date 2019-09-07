@@ -1,7 +1,6 @@
-package template;
+package com.alexa.jdbc.template;
 
-import exception.EntityBuilderException;
-import mapper.RowMapper;
+import com.alexa.jdbc.mapper.RowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

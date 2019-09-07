@@ -1,8 +1,6 @@
-package entity;
+package com.alexa.jdbc.entity;
 
 import lombok.Data;
-
-import java.sql.Date;
 
 @Data
 public class Product {

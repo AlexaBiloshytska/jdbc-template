@@ -1,7 +1,10 @@
+package com.alexa.jdbc;
+
+import com.alexa.jdbc.entity.Product;
+import com.alexa.jdbc.mapper.ProductMapper;
+import com.alexa.jdbc.template.NamedParameterJDBCTemplate;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import entity.Product;
-import mapper.ProductMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -1,7 +1,7 @@
-import executor.QueryExecutor;
-import mapper.RowMapper;
-import parser.Parser;
-import template.EntityBuilder;
+package com.alexa.jdbc.template;
+
+import com.alexa.jdbc.JdbcTemplate;
+import com.alexa.jdbc.mapper.RowMapper;
 
 import javax.sql.DataSource;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package parser;
+package com.alexa.jdbc.template;
 
 import java.util.ArrayList;
 import java.util.List;
